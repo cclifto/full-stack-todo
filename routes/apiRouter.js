@@ -3,6 +3,7 @@ const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
 let User = require('../db/schema.js').User
+let Task = require('../db/schema.js').Task
 
   
   apiRouter
@@ -46,6 +47,37 @@ let User = require('../db/schema.js').User
     })
 
     // Routes for a Model(resource) should have this structure
-
+    // Create One
+  apiRouter
+    .post('/tasks', function(req, res){
+      var recordObj = new Task(req.body)
+      recordObj.save(function(err){
+        if(err){
+          res.status(400).send(err)
+        }
+        else{
+          res.json(recordObj)
+        }
+      })
+    })
+    //read many
+    .get('/tasks', function(req, res){
+      //find allows us to query our own database
+      Task.find(req.query, function(err, records){
+        if(err){
+          res.status(400).send(err)
+        }
+        else{
+          res.json(records)
+        }
+      })
+    })
 
 module.exports = apiRouter
+
+
+
+
+
+
+

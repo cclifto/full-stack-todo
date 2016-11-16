@@ -15,6 +15,17 @@ const usersSchema = new mongoose.Schema({
 
 })
 
+const taskSchema = new mongoose.Schema({
+	taskName: {type:String, required:true},
+	complete: {type:Boolean, default:false},
+	userId: String,
+	difficulty: String,
+	createdAt: {type:Date, default:Date.now}
+})
+
+
+
 module.exports = {
-  User: mongoose.model('User', usersSchema)
+  User: mongoose.model('User', usersSchema),
+  Task: mongoose.model('Task', taskSchema)
 }
