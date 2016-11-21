@@ -1,4 +1,5 @@
 import STORE from './store'
+import User from './models/userModel'
 
 const ACTIONS = {
 
@@ -27,7 +28,19 @@ const ACTIONS = {
 		// METHOD 2: TAKING ADVANTAGE OF BACKBONE BUILT-IN EVENTS
 		STORE._get('todoCollection').add(newTaskAttrs)
 	},
-
+	registerUser: function(userInputObj) {
+		User.register(userInputObj)
+			.then( 
+				function(resp) {
+					console.log(resp)
+					alert('User successfully registered')
+				},
+				function(err) {
+					console.log(err)
+					alert('That didn\'t go as planned')
+				}
+			)
+	},
 	toggleComplete: function(cid) {
 		// first we need to get the right model and change its status
 		var coll = STORE._get('todoCollection')
