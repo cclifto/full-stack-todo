@@ -1,5 +1,8 @@
 import STORE from './store'
 import User from './models/userModel'
+import {TodoCollection,TodoModel} from './models'
+
+window.User = User
 
 const ACTIONS = {
 
@@ -11,23 +14,50 @@ const ACTIONS = {
 
 	createTask: function(name) {
 		var newTaskAttrs = {
-			title: name
+			taskName: name,
+			userId: User.getCurrentUser()._id
 		}
-
-		// // METHOD 1: MANUALLY MODIFYING THE COLLECTION AND CALLING ._SET
-		// // read collection from store's _data
-		// var coll = STORE._get('todoCollection')
-		// // add a new task model to it, according to the user input
-		// coll.add(newTaskAttrs)
-		// // call _set on the STORE, overwriting the old collection with the updated collection. 
-		// 	// this will trigger a 'storeChanged' event.
-		// STORE._set({
-		// 	todoCollection: coll
-		// })
-
-		// METHOD 2: TAKING ADVANTAGE OF BACKBONE BUILT-IN EVENTS
 		STORE._get('todoCollection').add(newTaskAttrs)
+		var taskModel = new TodoModel(newTaskAttrs)
+		taskModel.save()
+			.then(
+				function(resp){
+					console.log(resp)
+					alert("Task Successfully Added")
+				},
+				function(err){
+					console.log(err)
+					alert("Here's a task: learn to code!")
+				}
+				)
 	},
+
+	loginUser: function(email, password){
+		User.login(email, password)
+			.then(
+				function(resp){
+					console.log(resp)
+					alert('User successfully logged in')
+				},
+				function(err){
+					console.log(err)
+					alert('Login Failed')
+				})
+	},
+
+	logout: function(){
+		User.logout()
+			.then(
+				function(resp){
+					console.log(resp)
+					alert('User successfully logged out')
+				},
+				function(err){
+					console.log(err)
+					alert('Logout Failed')
+				})
+	},
+
 	registerUser: function(userInputObj) {
 		User.register(userInputObj)
 			.then( 
@@ -41,6 +71,7 @@ const ACTIONS = {
 				}
 			)
 	},
+
 	toggleComplete: function(cid) {
 		// first we need to get the right model and change its status
 		var coll = STORE._get('todoCollection')

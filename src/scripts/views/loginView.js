@@ -37,9 +37,18 @@ var Register = React.createClass({
 })
 
 var Login = React.createClass({
+	_handleSubmit: function(eventObj){
+		eventObj.preventDefault()
+		ACTIONS.loginUser(eventObj.target.daEmail.value, eventObj.target.daPassword.value)
+	},
+
 	render: function() {
 		return (
-			<form></form>
+			<form onSubmit={this._handleSubmit}>
+				<input type="email" 	name="daEmail" 		placeholder="PUT YO EMAIL IN HERE YA DUMMY" />
+				<input type="password" 	name="daPassword" 	placeholder="AND YO PASSWORD" />
+				<button type="submit">Log In</button>
+			</form>
 		)
 	}
 })

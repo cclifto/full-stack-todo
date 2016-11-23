@@ -34,6 +34,7 @@ const TodoApp = React.createClass({
 	 	}
 	 	return (
 	 		<div className={'todo-app'} >
+	 			<button onClick={ACTIONS.logout}>Log Out</button>
 	 			<Buttons currentTasks={this.state.currentTasks} />
 	 			<TodoList collection={tasksToRender} />
 	 		</div>
@@ -103,11 +104,11 @@ const TodoItem = React.createClass({
 	},
 
 	render: function() {
-		console.log(this.props.model.get('title'),this.props.model.get('status'))
+		console.log(this.props.model.get('taskName'),this.props.model.get('status'))
 		var checkboxValue = this.props.model.get('status') === 'complete' ? '✓' : ' '
 		return (
 			<li>
-				<span className='text'>{this.props.model.get('title')}</span>
+				<span className='text'>{this.props.model.get('taskName')}</span>
 				<span className='checkbox' onClick={this._toggleTaskStatus}>
 				 {checkboxValue}
 				</span>

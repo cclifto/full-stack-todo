@@ -18,7 +18,7 @@ const usersSchema = new mongoose.Schema({
 const taskSchema = new mongoose.Schema({
 	taskName: {type:String, required:true},
 	complete: {type:Boolean, default:false},
-	userId: String,
+	userId: {type: String, required: true},
 	difficulty: String,
 	createdAt: {type:Date, default:Date.now}
 })
