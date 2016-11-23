@@ -28,16 +28,33 @@ const ACTIONS = {
 				function(err){
 					console.log(err)
 					alert("Here's a task: learn to code!")
-				}
-				)
+				})
+		STORE._emitChange()
 	},
-
+	fetchTasks: function(){
+		var todoCollection = new TodoCollection()
+		todoCollection.fetch({
+			data: {
+				userId: User.getCurrentUser()._id
+			}
+		})
+			.then(function(){
+				STORE._set({
+					todoCollection: todoCollection
+				})	
+			},
+			function(err){
+				console.log(err)
+				alert("ya goofed!")
+			})
+	},
 	loginUser: function(email, password){
 		User.login(email, password)
 			.then(
 				function(resp){
 					console.log(resp)
 					alert('User successfully logged in')
+					location.hash = "home"
 				},
 				function(err){
 					console.log(err)
@@ -51,6 +68,7 @@ const ACTIONS = {
 				function(resp){
 					console.log(resp)
 					alert('User successfully logged out')
+					location.hash = 'login'
 				},
 				function(err){
 					console.log(err)

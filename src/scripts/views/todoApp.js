@@ -1,6 +1,7 @@
 import React from 'react'
 import STORE from '../store'
 import ACTIONS from '../actions'
+import User from '../models/userModel'
 
 
 const TodoApp = React.createClass({
@@ -9,6 +10,9 @@ const TodoApp = React.createClass({
 		STORE.on('storeChanged',()=>{
 			this.setState(STORE._getData())
 		})
+	},
+	componentWillUnmount: function(){
+		STORE.off('storeChanged')
 	},
 
 	getInitialState: function() {
@@ -33,7 +37,8 @@ const TodoApp = React.createClass({
 	 		tasksToRender = tasksToRender.filter(mod => mod.get('status') === 'incomplete')
 	 	}
 	 	return (
-	 		<div className={'todo-app'} >
+	 		<div className={'todo-app'}>
+	 			<h3>Welcome {User.getCurrentUser().email}</h3>
 	 			<button onClick={ACTIONS.logout}>Log Out</button>
 	 			<Buttons currentTasks={this.state.currentTasks} />
 	 			<TodoList collection={tasksToRender} />
